@@ -29,7 +29,7 @@ def index(request):
                 check+=1
                 break
         if check==0:
-            return HttpResponse("response.csv file has no roll no. with named ans")
+            return HttpResponse("response.csv file has no roll no. with named ANSWER")
         for data in y.itertuples():
             # k+=1
             # if k>10:
@@ -280,7 +280,8 @@ def index(request):
                 if os.path.exists(r"sample_output/marksheet/"+info[1]+".xlsx"):
                     continue
                 else:
-                    op_missed=workbook()
+                    # print(info[1])
+                    op_missed=Workbook()
                     op_sheet=op_missed.active
                     op_missed.save(r"sample_output/marksheet/"+info[1]+".xlsx")
 
@@ -290,7 +291,7 @@ def index(request):
         f1=request.FILES["file1"]
         f2=request.FILES["file2"]  
 
-        y=pd.read_csv(f2)
+        y=pd.read_csv(f2)   
         op1=Workbook()
         op1_sheet=op1.active
         op1_sheet.cell(row=1,column=1).value="timestatmp"
@@ -351,7 +352,7 @@ def index(request):
         f2=request.FILES["file2"]
         y3=pd.read_csv(f2)
         fromaddr="ankityadav55810@gmail.com"
-        password='an9968abhi'
+        password='*******'#for privacy i have not added pass
         server=smtplib.SMTP('smtp.gmail.com',587)
         server.connect("smtp.gmail.com",587)
         server.starttls()
@@ -359,15 +360,15 @@ def index(request):
         
         l=1
         for data in y3.itertuples():
-            print(data[2])
-            l+=1
-            if l>5:
-                break
+            # print(data[2])
+            # l+=1
+            # if l>3:
+            #     break
             if data[7]=="Roll Number" or data[7]=="ANSWER":
                 continue
             else:   
-                li=["yadav.abhi0210@gmail.com","creativeankit503@gmail.com"]
-                # li=[data[2],data[5]]
+                # li=["yadav.abhi0210@gmail.com","creativeankit503@gmail.com"]
+                li=[data[2],data[5]]
                 for i in range(2):
                     x=li[i]
                     msg=MIMEMultipart()
