@@ -3,7 +3,7 @@ from openpyxl.styles import colors
 from home.models import Index
 from openpyxl.drawing.image import  Image
 from openpyxl import Workbook, workbook
-from openpyxl.styles import Font
+from openpyxl.styles import Font,DEFAULT_FONT
 from openpyxl.styles.colors import Color
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -14,6 +14,9 @@ import openpyxl
 import csv
 import os
 import pandas as pd
+DEFAULT_FONT.name = 'Times'
+DEFAULT_FONT.size = 13
+
 # Create your views here.
 def index(request):
     if request.method=='POST' and 'log' in request.POST :
@@ -30,6 +33,7 @@ def index(request):
                 break
         if check==0:
             return HttpResponse("response.csv file has no roll no. with named ANSWER")
+     
         for data in y.itertuples():
             # k+=1
             # if k>10:
@@ -43,7 +47,8 @@ def index(request):
                  op=Workbook()
                  op_sheet=op.active
                  iit_logo=Image("image/proj1.jpeg")
-                 iit_logo.height=60
+                 iit_logo.height=70
+                 iit_logo.width=50
                  iit_logo.anchor='A1'
                  op_sheet.add_image(iit_logo)
                  op_sheet.cell(row=6 ,column=1).value ="Name:"
@@ -63,8 +68,8 @@ def index(request):
                  op_sheet.cell(row=9 ,column=5).value = "Max"
                  op_sheet.cell(row=10 ,column=1).value = "No."
                  op_sheet.cell(row=11,column=1).value = "Marking"
-                 op_sheet.cell(row=11,column=2).value = int(c)
-                 op_sheet.cell(row=11,column=3).value = int(n)
+                 op_sheet.cell(row=11,column=2).value = float(c)
+                 op_sheet.cell(row=11,column=3).value = float(n)
                  op_sheet.cell(row=12,column=1).value = "Total"
                  op_sheet.cell(row=15 ,column=1).value = "Student Ans"
                  op_sheet.cell(row=15 ,column=2).value = "Correct Ans"
@@ -139,9 +144,9 @@ def index(request):
                  op_sheet.cell(row=10,column=4).value = na
                  op_sheet.cell(row=10 ,column=5).value = right+wrong+na
                  op_sheet.cell(row=11 ,column=4).value = 0
-                 op_sheet.cell(row=12,column=2).value = right*int(c)
-                 op_sheet.cell(row=12,column=3).value = wrong*int(n)
-                 op_sheet.cell(row=12,column=5).value = right*int(c)+wrong*int(n)
+                 op_sheet.cell(row=12,column=2).value = right*float(c)
+                 op_sheet.cell(row=12,column=3).value = wrong*float(n)
+                 op_sheet.cell(row=12,column=5).value = right*float(c)+wrong*float(n)
                  op_sheet['B10'].font=Font(color="FF00FF00")
                  op_sheet['B11'].font=Font(color="FF00FF00")
                  op_sheet['B12'].font=Font(color="FF00FF00")
@@ -182,8 +187,8 @@ def index(request):
                 op_sheet.cell(row=9 ,column=5).value = "Max"
                 op_sheet.cell(row=10 ,column=1).value = "No."
                 op_sheet.cell(row=11,column=1).value = "Marking"
-                op_sheet.cell(row=11,column=2).value = int(c)
-                op_sheet.cell(row=11,column=3).value = int(n)
+                op_sheet.cell(row=11,column=2).value = float(c)
+                op_sheet.cell(row=11,column=3).value = float(n)
                 op_sheet.cell(row=12,column=1).value = "Total"
                 op_sheet.cell(row=15 ,column=1).value = "Student Ans"
                 op_sheet.cell(row=15 ,column=2).value = "Correct Ans"
@@ -257,9 +262,9 @@ def index(request):
                 op_sheet.cell(row=10,column=4).value = na
                 op_sheet.cell(row=10 ,column=5).value = right+wrong+na
                 op_sheet.cell(row=11 ,column=4).value = 0
-                op_sheet.cell(row=12,column=2).value = right*int(c)
-                op_sheet.cell(row=12,column=3).value = wrong*int(n)
-                op_sheet.cell(row=12,column=5).value = right*int(c)+wrong*int(n)
+                op_sheet.cell(row=12,column=2).value = right*float(c)
+                op_sheet.cell(row=12,column=3).value = wrong*float(n)
+                op_sheet.cell(row=12,column=5).value = right*float(c)+wrong*float(n)
                 op_sheet['B10'].font=Font(color="FF00FF00")
                 op_sheet['B11'].font=Font(color="FF00FF00")
                 op_sheet['B12'].font=Font(color="FF00FF00")
@@ -337,7 +342,7 @@ def index(request):
                         correct+=1    
                     else:
                         incorrect+=1  
-            marks=(correct*int(c))+(incorrect*int(n)) 
+            marks=(correct*float(c))+(incorrect*float(n)) 
             final_marks=str(marks)+"/140"
             op1_sheet.cell(row=row_inserted,column=7).value=final_marks          
             status="["+str(correct)+","+str(incorrect)+","+str(not_a)+"]"           
@@ -360,14 +365,14 @@ def index(request):
         
         l=1
         for data in y3.itertuples():
-            # print(data[2])
+            print(data[2])
             # l+=1
             # if l>3:
             #     break
             if data[7]=="Roll Number" or data[7]=="ANSWER":
                 continue
             else:   
-                # li=["yadav.abhi0210@gmail.com","creativeankit503@gmail.com"]
+                # li=["yadav.abhi0210@gmail.com","akaparalta2001@gmail.com"]
                 li=[data[2],data[5]]
                 for i in range(2):
                     x=li[i]
